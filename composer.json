@@ -1,0 +1,23 @@
+{
+    "name": "nashgao/mac-parser",
+    "description": "A Library that parses mac address",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "nashgao",
+            "email": "nashgao1992@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4" : {
+            "Nashgao\\MacParser\\": "src"
+        }
+    },
+    "autoload-dev" : {
+        "psr-4": {
+            "Nashgao\\Testing\\": "test"
+        }
+    }
+}
