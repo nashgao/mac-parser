@@ -140,6 +140,4 @@ class MacAddressParser extends Parser
     {
         return preg_match(self::PLAIN, $this->mac);
     }
-
-
 }

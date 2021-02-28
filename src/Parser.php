@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace Nashgao\MacParser;
 
-
 class Parser
 {
     /**
@@ -39,7 +38,7 @@ class Parser
     {
         $length = strlen($octets);
         if ($length < 8) {
-            for ($i = 0; $i < (8 - $length); $i++ ) {
+            for ($i = 0; $i < (8 - $length); $i++) {
                 $octets = '0' . $octets;
             }
         }
