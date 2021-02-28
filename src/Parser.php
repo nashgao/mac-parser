@@ -34,4 +34,15 @@ class Parser
     const UNIQUE = 'unique';
 
     const LOCAL = 'local';
+
+    protected function compliment(string $octets): string
+    {
+        $length = strlen($octets);
+        if ($length < 8) {
+            for ($i = 0; $i < (8 - $length); $i++ ) {
+                $octets = '0' . $octets;
+            }
+        }
+        return $octets;
+    }
 }

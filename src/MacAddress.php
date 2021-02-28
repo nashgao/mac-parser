@@ -14,7 +14,7 @@ class MacAddress
     protected MacAddressParser $mac;
 
     /**
-     * @param string|int $mac
+     * @param string|array $mac
      * @throws Exception
      */
     public function __construct($mac)
