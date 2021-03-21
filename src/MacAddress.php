@@ -21,7 +21,7 @@ class MacAddress
 {
     const BROADCAST = 'ffffffffffff';
 
-    protected MacAddressParser $mac;
+    protected Parser $mac;
 
     /**
      * @param string|array $mac
@@ -59,7 +59,6 @@ class MacAddress
 
     public function __call($name, $arguments)
     {
-        var_dump($arguments);
-        return $this->mac->{$namem}($arguments);
+        return $this->mac->{$name}($arguments);
     }
 }

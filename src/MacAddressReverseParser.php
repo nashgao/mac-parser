@@ -19,7 +19,7 @@ class MacAddressReverseParser extends Parser
     public function __construct(array $octets)
     {
         foreach ($octets as &$octet) {
-            $octets = $this->compliment($octets);
+            $octet = $this->compliment((string)$octet);
         }
 
         $octets = implode('', $octets);
@@ -41,6 +41,11 @@ class MacAddressReverseParser extends Parser
     public function hasCid(): bool
     {
         return $this->mac->getType() === self::LOCAL;
+    }
+
+    public function toBinary(string $hex): string
+    {
+        return $this->mac->toBinary($hex);
     }
 
     public function getMac(): string
@@ -67,4 +72,10 @@ class MacAddressReverseParser extends Parser
     {
         return $this->mac->getType();
     }
+
+    public function isValid(): bool
+    {
+        return $this->mac->isValid();
+    }
+
 }

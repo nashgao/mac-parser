@@ -74,6 +74,20 @@ class MacAddressParser extends Parser
         return $this->type;
     }
 
+    public function isValid(): bool
+    {
+        switch (true) {
+            case preg_match(self::SIX_DIGITS, $this->normalized):
+            case preg_match(self::EIGHT_DIGITS, $this->normalized):
+            case preg_match(self::COLON, $this->normalized):
+            case preg_match(self::HYPHEN, $this->normalized):
+            case preg_match(self::PLAIN, $this->normalized):
+                return true;
+            default:
+                return false;
+        }
+    }
+
     protected function normalize(): MacAddressParser
     {
         $this->normalized = strtolower(preg_replace(['/:/', '/-/'], '', $this->mac));

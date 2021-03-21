@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Nashgao\MacParser;
 
-class Parser
+abstract class Parser
 {
     /**
      * matching patterns of mac addresses.
@@ -35,19 +35,7 @@ class Parser
     const LOCAL = 'local';
 
 
-    public function isValid(): bool
-    {
-        switch (true) {
-            case preg_match(self::SIX_DIGITS, $this->normalized):
-            case preg_match(self::EIGHT_DIGITS, $this->normalized):
-            case preg_match(self::COLON, $this->normalized):
-            case preg_match(self::HYPHEN, $this->normalized):
-            case preg_match(self::PLAIN, $this->normalized):
-                return true;
-            default:
-                return false;
-        }
-    }
+
 
     protected function compliment(string $octets): string
     {
@@ -60,6 +48,7 @@ class Parser
         return $octets;
     }
 
+    abstract public function isValid():bool;
     abstract public function hasOui(): bool;
     abstract public function hasCid(): bool;
     abstract public function toBinary(string $hex): string;
