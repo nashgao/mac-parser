@@ -1,0 +1,5 @@
+vendor
+phpstan.neon
+.php_cs.cache
+.idea
+composer.lock
