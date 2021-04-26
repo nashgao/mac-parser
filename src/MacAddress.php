@@ -7,13 +7,13 @@ namespace Nashgao\MacParser;
 
 use Exception;
 
-/** 
+/**
  * @method bool hasOut()
  * @method bool hasCid()
  * @method string toBinary(string $hex)
  * @method string getMac()
  * @method string getNormalized()
- * @method array getOctets() 
+ * @method array getOctets()
  * @method string getFirstOctetsBinary()
  * @method string getType()
  */
@@ -29,7 +29,14 @@ class MacAddress
      */
     public function __construct($mac)
     {
-        $this->mac = is_string($mac) ? new MacAddressParser($mac) : new MacAddressReverseParser($mac);
+        $this->mac = is_array($mac)
+            ? new MacAddressReverseParser($mac)
+            : (function () use ($mac) {
+                if (is_numeric($mac)) {
+                    $mac = dechex($mac);
+                }
+                return new MacAddress($mac);
+            })();
     }
 
     public function isBroadcast(): bool

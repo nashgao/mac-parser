@@ -77,5 +77,4 @@ class MacAddressReverseParser extends Parser
     {
         return $this->mac->isValid();
     }
-
 }
