@@ -35,7 +35,7 @@ class MacAddress
                 if (is_numeric($mac)) {
                     $mac = dechex($mac);
                 }
-                return new MacAddress($mac);
+                return new MacAddressParser($mac);
             })();
     }
 

@@ -66,4 +66,11 @@ class TestParser extends AbstractTest
         $parser = new MacAddress($octets);
         $this->assertEquals('aaaaaa', $parser->getNormalized());
     }
+
+    public function testNumericMac()
+    {
+        $mac = 187649984473770;
+        $parser = new MacAddress($mac);
+        $this->assertEquals('aaaaaaaaaaaa', $parser->getNormalized());
+    }
 }
