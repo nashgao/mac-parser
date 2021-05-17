@@ -22,6 +22,7 @@ class MacAddressReverseParser extends Parser
             $octet = $this->compliment((string)$octet);
         }
 
+        // compliment the digits
         $octets = implode('', $octets);
         $octetsLen = strlen($octets);
         $mac = '';

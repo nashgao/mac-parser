@@ -5,6 +5,8 @@ declare(strict_types=1);
 
 namespace Nashgao\MacParser;
 
+use Nashgao\MacParser\Exception\InvalidMacException;
+
 class MacAddressParser extends Parser
 {
     protected string $mac;
@@ -26,7 +28,7 @@ class MacAddressParser extends Parser
         $this->mac = $mac;
         $this->normalize();
         if (! $this->isValid()) {
-            throw new \Exception('invalid mac address');
+            throw new InvalidMacException('invalid mac address, %d provided', $mac);
         }
 
         $this->extractOctets()
