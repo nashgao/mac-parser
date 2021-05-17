@@ -3,6 +3,7 @@
 namespace Nashgao\Testing\Cases;
 
 
+use Nashgao\MacParser\Exception\InvalidMacException;
 use Nashgao\Testing\AbstractTest;
 use Nashgao\MacParser\MacAddress;
 
@@ -23,9 +24,9 @@ class TestParser extends AbstractTest
     {
         $invalidMac = 'aaa';
         try {
-            $parser = new MacAddress($invalidMac);
-        } catch (\Exception $e) {
-            $this->assertInstanceOf(\Exception::class, $e);
+            $parser = new MacAddress($invalidMac, false);
+        } catch (InvalidMacException $e) {
+            $this->assertInstanceOf(InvalidMacException::class, $e);
         }
     }
 
@@ -65,6 +66,19 @@ class TestParser extends AbstractTest
         ];
         $parser = new MacAddress($octets);
         $this->assertEquals('aaaaaa', $parser->getNormalized());
+    }
+
+    public function testMacWithInsufficientString()
+    {
+        // 5 digit
+        $mac = 'aaaaa';
+        $parser = new MacAddress($mac);
+        $this->assertEquals('0aaaaa', $parser->getNormalized());
+
+        $mac = 'aaaaaaa';
+        $parser = new MacAddress($mac);
+        var_dump($parser->getNormalized());
+        $this->assertEquals('00000aaaaaaa', $parser->getNormalized());
     }
 
     public function testNumericMac()

@@ -11,8 +11,6 @@ class MacAddressParser extends Parser
 {
     protected string $mac;
 
-    protected string $normalized;
-
     protected array $octets;
 
     protected string $firstOctetsBinary;
@@ -28,7 +26,9 @@ class MacAddressParser extends Parser
         $this->mac = $mac;
         $this->normalize();
         if (! $this->isValid()) {
-            throw new InvalidMacException('invalid mac address, %d provided', $mac);
+            throw new InvalidMacException(
+                sprintf('invalid mac address, %d provided', $mac)
+            );
         }
 
         $this->extractOctets()
@@ -88,12 +88,6 @@ class MacAddressParser extends Parser
             default:
                 return false;
         }
-    }
-
-    protected function normalize(): MacAddressParser
-    {
-        $this->normalized = strtolower(preg_replace(['/:/', '/-/'], '', $this->mac));
-        return $this;
     }
 
     protected function extractOctets(): MacAddressParser

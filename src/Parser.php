@@ -34,8 +34,18 @@ abstract class Parser
 
     const LOCAL = 'local';
 
+    protected string $normalized;
 
+    protected function normalize(): self
+    {
+        $this->normalized = strtolower(preg_replace(['/:/', '/-/'], '', $this->mac));
+        return $this;
+    }
 
+    public static function normalizeMac(string $mac): string
+    {
+        return strtolower(preg_replace(['/:/', '/-/'], '', $mac));
+    }
 
     protected function compliment(string $octets): string
     {

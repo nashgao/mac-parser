@@ -25,35 +25,70 @@ class MacAddress
     protected Parser $mac;
 
     /**
-     * @param string|array $mac
+     * @param string|array|int $mac
      * @param bool $compliment set the prefix as 0 as string
+     * @param bool $full if compliment the mac to 6 digit or 12 digit
      * @param int $digit there might be a chance that the insufficient digit in hex is numeric (like 00000)
      *                   or it can be a mac address in dec (like 187649984473770), so the digit indicates
      *                   that if the length of the mac given equals to the digit then consider it as dec otherwise
      *                   consider it as hex
-     * @throws Exception
+     * @throws InvalidMacException
      */
-    public function __construct($mac, bool $compliment = false, int $digit = 15)
+    public function __construct($mac, bool $compliment = true, bool $full = false,  int $digit = 15)
     {
-        $this->mac = is_array($mac)
-            ? new MacAddressReverseParser($mac)
-            : (function () use ($digit, $mac, $compliment) {
-                if (! is_string($mac)) {
-                    throw new InvalidMacException(
-                        sprintf('invalid type for mac address, array or string needed, but %d provided', gettype($mac))
-                    );
-                }
+        switch (true):
+            case is_array($mac);
+                $this->mac = new MacAddressReverseParser($mac);
+            break;
+            case is_int($mac):
+                $this->mac = new MacAddressParser(dechex($mac));
+            break;
+            case is_string($mac):
                 $macLen = strlen($mac);
                 if (is_numeric($mac) and $macLen === $digit) {
                     $mac = dechex($mac);
                 }
 
-                if($compliment and $macLen % 2 !== 0) {
-                    $mac = '0' . $mac;
+                if (! is_string($mac)) {
+                    throw new InvalidMacException(
+                        sprintf('invalid type for mac address, array or string needed, but %d provided', gettype($mac))
+                    );
                 }
 
-                return new MacAddressParser($mac);
-            })();
+                $mac = Parser::normalizeMac($mac);
+                $macLen = strlen($mac);
+                if($compliment) {
+                    if($macLen % 2 !== 0) {
+                        $mac = '0' . $mac;
+                        $macLen++;
+                    }
+
+                    if ($macLen > 6) {
+                        $complimentDigit = 12 - $macLen;
+                    } else {
+                        $complimentDigit = ($full)
+                            ? 12 - $macLen
+                            : 6 - $macLen;
+
+                    }
+
+                    if ($complimentDigit !== 0) {
+                        for ($index = 0; $index < $complimentDigit; $index++) {
+                            $mac = '0' . $mac;
+                        }
+                    }
+                }
+
+
+                $this->mac = new MacAddressParser($mac);
+                break;
+        endswitch;
+
+        if (! isset($this->mac)) {
+            throw new InvalidMacException(
+                sprintf('invalid type for mac address, array or string needed, but %d provided', gettype($mac))
+            );
+        }
     }
 
     public function isBroadcast(): bool
