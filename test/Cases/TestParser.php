@@ -77,7 +77,6 @@ class TestParser extends AbstractTest
 
         $mac = 'aaaaaaa';
         $parser = new MacAddress($mac);
-        var_dump($parser->getNormalized());
         $this->assertEquals('00000aaaaaaa', $parser->getNormalized());
     }
 

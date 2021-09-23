@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 namespace Nashgao\MacParser;
 
-use Exception;
 use Nashgao\MacParser\Exception\InvalidMacException;
 
 /**
@@ -44,15 +43,13 @@ class MacAddress
                 $this->mac = new MacAddressParser(dechex($mac));
             break;
             case is_string($mac):
+                if (empty($mac)) {
+                    break;
+                }
+
                 $macLen = strlen($mac);
                 if (is_numeric($mac) and $macLen === $digit) {
                     $mac = dechex($mac);
-                }
-
-                if (! is_string($mac)) {
-                    throw new InvalidMacException(
-                        sprintf('invalid type for mac address, array or string needed, but %d provided', gettype($mac))
-                    );
                 }
 
                 $mac = Parser::normalizeMac($mac);
