@@ -83,7 +83,7 @@ class MacAddress
 
         if (! isset($this->mac)) {
             throw new InvalidMacException(
-                sprintf('invalid type for mac address, array or string needed, but %d provided', gettype($mac))
+                sprintf('invalid type for mac address, array or string needed, but %s provided', gettype($mac))
             );
         }
     }

@@ -27,7 +27,7 @@ class MacAddressParser extends Parser
         $this->normalize();
         if (! $this->isValid()) {
             throw new InvalidMacException(
-                sprintf('invalid mac address, %d provided', $mac)
+                sprintf('invalid mac address, %s provided', $mac)
             );
         }
 
