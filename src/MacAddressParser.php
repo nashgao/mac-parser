@@ -1,6 +1,5 @@
 <?php
 
-
 declare(strict_types=1);
 
 namespace Nashgao\MacParser;
@@ -18,8 +17,7 @@ class MacAddressParser extends Parser
     protected string $type;
 
     /**
-     * @param $mac
-     * @throws \Exception
+     * @throws InvalidMacException
      */
     public function __construct(string $mac)
     {
@@ -27,7 +25,7 @@ class MacAddressParser extends Parser
         $this->normalize();
         if (! $this->isValid()) {
             throw new InvalidMacException(
-                sprintf('invalid mac address, %s provided', $mac)
+                \sprintf('invalid mac address, %s provided', $mac)
             );
         }
 
@@ -96,7 +94,7 @@ class MacAddressParser extends Parser
             $this->normalize();
         }
 
-        preg_match_all(self::TWO_DIGITS, $this->normalized, $matches, PREG_PATTERN_ORDER);
+        \preg_match_all(self::TWO_DIGITS, $this->normalized, $matches, PREG_PATTERN_ORDER);
         $this->octets = $matches[0];
         foreach ($this->octets as &$octet) {
             $octet = $this->toBinary($octet);
@@ -119,9 +117,9 @@ class MacAddressParser extends Parser
      */
     protected function extractType(): MacAddressParser
     {
-        if (substr($this->firstOctetsBinary, -2) == '00') {
+        if (\str_ends_with($this->firstOctetsBinary, '00')) {
             $this->type = self::UNIQUE;
-        } elseif (substr($this->firstOctetsBinary, -4) == '1010') {
+        } elseif (\str_ends_with($this->firstOctetsBinary, '1010')) {
             $this->type = self::LOCAL;
         } else {
             $this->type = self::UNKNOWN;
@@ -132,8 +130,8 @@ class MacAddressParser extends Parser
     /**
      * @return false|int
      */
-    private function isNormalized()
+    private function isNormalized(): bool|int
     {
-        return preg_match(self::PLAIN, $this->mac);
+        return \preg_match(self::PLAIN, $this->mac);
     }
 }

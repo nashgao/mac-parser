@@ -9,10 +9,12 @@
             "email": "nashgao1992@gmail.com"
         }
     ],
-    "require": {},
+    "require": {
+        "php": ">=8.0"
+    },
     "require-dev": {
-        "hyperf/testing":"~2.2.0",
-        "friendsofphp/php-cs-fixer": "^v2.1.04"
+        "phpunit/phpunit": ">=9.5",
+        "friendsofphp/php-cs-fixer": "~3.0"
     },
     "autoload": {
         "psr-4" : {
@@ -24,8 +26,10 @@
             "Nashgao\\Testing\\": "test"
         }
     },
+    "minimum-stability": "dev",
     "scripts": {
         "cs-fix": "php-cs-fixer fix $1",
-        "test": "co-phpunit -c phpunit.xml --colors=always"
+        "test": "phpunit -c phpunit.xml --colors=always",
+        "test-group": "phpunit --prepend test/bootstrap.php -c phpunit.xml --color=always --group"
     }
 }

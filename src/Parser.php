@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace Nashgao\MacParser;
 
 abstract class Parser
@@ -10,61 +9,69 @@ abstract class Parser
     /**
      * matching patterns of mac addresses.
      */
-    const PLAIN = ('/^[0-9A-Fa-f]{12}$/');
+    public const PLAIN = ('/^[0-9A-Fa-f]{12}$/');
 
-    const HYPHEN = ('/^([0-9A-Fa-f]{2}[-]{1}){5}[0-9A-Fa-f]{2}$/');
+    public const HYPHEN = ('/^([0-9A-Fa-f]{2}[-]{1}){5}[0-9A-Fa-f]{2}$/');
 
-    const COLON = ('/^([0-9A-Fa-f]{2}[:]{1}){5}[0-9A-Fa-f]{2}$/');
+    public const COLON = ('/^([0-9A-Fa-f]{2}[:]{1}){5}[0-9A-Fa-f]{2}$/');
 
-    const DOT = ('/^([0-9A-Fa-f]{4}[.]{1}){2}[0-9A-Fa-f]{4}$/');
+    public const DOT = ('/^([0-9A-Fa-f]{4}[.]{1}){2}[0-9A-Fa-f]{4}$/');
 
-    const NOT_DIGITS = ('/[^0-9A-Fa-f]/');
+    public const NOT_DIGITS = ('/[^0-9A-Fa-f]/');
 
-    const TWO_DIGITS = ('/[0-9a-f]{2}/');
+    public const TWO_DIGITS = ('/[0-9a-f]{2}/');
 
-    const FOUR_DIGITS = ('/[0-9a-f]{4}/');
+    public const FOUR_DIGITS = ('/[0-9a-f]{4}/');
 
-    const SIX_DIGITS = ('/[0-9a-f]{6}/');
+    public const SIX_DIGITS = ('/[0-9a-f]{6}/');
 
-    const EIGHT_DIGITS = ('/[0-9a-f]{8}/');
+    public const EIGHT_DIGITS = ('/[0-9a-f]{8}/');
 
-    const UNKNOWN = 'unknown';
+    public const UNKNOWN = 'unknown';
 
-    const UNIQUE = 'unique';
+    public const UNIQUE = 'unique';
 
-    const LOCAL = 'local';
+    public const LOCAL = 'local';
 
     protected string $normalized;
 
-    protected function normalize(): self
-    {
-        $this->normalized = strtolower(preg_replace(['/:/', '/-/'], '', $this->mac));
-        return $this;
-    }
-
     public static function normalizeMac(string $mac): string
     {
-        return strtolower(preg_replace(['/:/', '/-/'], '', $mac));
+        return \strtolower(\preg_replace(['/:/', '/-/'], '', $mac));
+    }
+
+    abstract public function isValid(): bool;
+
+    abstract public function hasOui(): bool;
+
+    abstract public function hasCid(): bool;
+
+    abstract public function toBinary(string $hex): string;
+
+    abstract public function getMac(): string;
+
+    abstract public function getNormalized(): string;
+
+    abstract public function getOctets(): array;
+
+    abstract public function getFirstOctetsBinary(): string;
+
+    abstract public function getType(): string;
+
+    protected function normalize(): self
+    {
+        $this->normalized = \strtolower(\preg_replace(['/:/', '/-/'], '', $this->mac));
+        return $this;
     }
 
     protected function compliment(string $octets): string
     {
-        $length = strlen($octets);
+        $length = \strlen($octets);
         if ($length < 8) {
-            for ($i = 0; $i < (8 - $length); $i++) {
+            for ($i = 0; $i < (8 - $length); ++$i) {
                 $octets = '0' . $octets;
             }
         }
         return $octets;
     }
-
-    abstract public function isValid():bool;
-    abstract public function hasOui(): bool;
-    abstract public function hasCid(): bool;
-    abstract public function toBinary(string $hex): string;
-    abstract public function getMac(): string;
-    abstract public function getNormalized(): string;
-    abstract public function getOctets(): array;
-    abstract public function getFirstOctetsBinary(): string;
-    abstract public function getType(): string;
 }

@@ -2,33 +2,34 @@
 
 declare(strict_types=1);
 
-
 namespace Nashgao\MacParser;
 
 /**
- * parses the mac address from a octet
+ * parses the mac address from a octet.
  */
 class MacAddressReverseParser extends Parser
 {
     protected MacAddressParser $mac;
 
     /**
-     * @param array $octets
      * @throws \Exception
      */
     public function __construct(array $octets)
     {
-        foreach ($octets as &$octet) {
-            $octet = $this->compliment((string)$octet);
+        $replacement = [];
+        foreach ($octets as $octet) {
+            $replacement[] = $this->compliment((string) $octet);
         }
 
+        $octets = $replacement;
+
         // compliment the digits
-        $octets = implode('', $octets);
-        $octetsLen = strlen($octets);
+        $octets = \implode('', $octets);
+        $octetsLen = \strlen($octets);
         $mac = '';
-        for ($i = 0; $i < $octetsLen; $i+=8) {
-            $mac .= dechex(bindec(substr($octets, 0, 8)));
-            $octets = substr($octets, -(strlen($octets) - 8));
+        for ($i = 0; $i < $octetsLen; $i += 8) {
+            $mac .= \dechex(\bindec(\substr($octets, 0, 8)));
+            $octets = \substr($octets, -(\strlen($octets) - 8));
         }
 
         $this->mac = new MacAddressParser($mac);
