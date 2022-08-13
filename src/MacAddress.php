@@ -77,7 +77,7 @@ class MacAddress
 
         if (\is_null($this->mac)) {
             throw new InvalidMacException(
-                \sprintf('invalid type for mac address, array or string needed, but %s provided', \gettype($mac))
+                \sprintf('invalid type for mac address, array or string needed, but %s: %s provided', \gettype($mac), $mac)
             );
         }
     }
